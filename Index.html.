@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#fff5f8">
+<title>KIARA | Fashion House</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#fffafb;color:#292027;font-family:Arial,sans-serif}
+header{background:#fff;padding:17px 18px;position:sticky;top:0;z-index:5;border-bottom:1px solid #f2dce5}
+.brand{text-align:center;font-family:Georgia,serif;font-size:29px;letter-spacing:7px;color:#bd6489}
+.tag{text-align:center;font-size:9px;letter-spacing:3px;margin-top:5px;color:#92717f}
+nav{display:flex;justify-content:space-around;padding:13px 5px;background:#fff;position:sticky;top:80px;z-index:4}
+nav button{border:0;background:none;font-size:12px;color:#725565}
+button{cursor:pointer}
+.hero{margin:16px;background:#f5dce7;padding:35px 20px;text-align:center;min-height:230px;display:flex;flex-direction:column;justify-content:center}
+.hero small{letter-spacing:4px;font-size:10px}
+.hero h1{font-family:Georgia,serif;font-size:35px;font-weight:normal;margin:15px 0}
+.hero p{font-size:12px}
+.pink{background:#bd6489;color:white;border:0;padding:13px 23px;letter-spacing:2px;font-size:11px}
+.section{padding:16px}
+.heading{text-align:center;font-family:Georgia,serif;font-size:25px;margin:20px 0 8px}
+.sub{text-align:center;color:#987b88;font-size:11px;margin-bottom:20px}
+.categories{display:flex;gap:9px;overflow:auto;padding:5px 0 15px}
+.categories button{white-space:nowrap;background:#fff;border:1px solid #edcfdd;padding:10px 15px;border-radius:20px;color:#80546a;font-size:11px}
+.categories button.active{background:#bd6489;color:white}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.product{background:white;border:1px solid #f2e5eb;position:relative;padding-bottom:12px}
+.product img{width:100%;height:190px;object-fit:cover;background:#f4e8ed}
+.product h3{font-family:Georgia,serif;font-size:15px;font-weight:normal;margin:10px 9px 5px}
+.price{font-size:12px;color:#bd6489;margin:0 9px}
+.product button{margin:9px;width:calc(100% - 18px);padding:9px;background:#f7e5ed;border:0;color:#79475e;font-size:11px}
+.heart{position:absolute;right:8px;top:8px;background:white;border:0;border-radius:50%;width:31px;height:31px;font-size:17px}
+footer{text-align:center;background:#f7e5ed;padding:30px 15px;margin-top:35px}
+footer strong{font-family:Georgia,serif;letter-spacing:5px;color:#bd6489;font-size:23px}
+footer p{font-size:10px;color:#765c69}
+#notice{text-align:center;font-size:12px;color:#bd6489;padding:8px}
+</style>
+</head>
+<body>
+<header>
+<div class="brand">KIARA</div>
+<div class="tag">THE ART OF PERSONAL STYLE</div>
+</header>
+<nav>
+<button onclick="show('home')">HOME</button>
+<button onclick="show('shop')">SHOP</button>
+<button onclick="show('collections')">COLLECTIONS</button>
+<button onclick="show('wishlist')">♡ <span id="wishCount">0</span></button>
+<button onclick="show('bag')">BAG (<span id="bagCount">0</span>)</button>
+</nav>
+
+<main id="app">
+<section id="home">
+<div class="hero">
+<small>THE NEW COLLECTION</small>
+<h1>Fashion is an art.</h1>
+<p>Discover your style. Express your identity.</p>
+<div><button class="pink" onclick="show('shop')">EXPLORE THE SHOP</button></div>
+</div>
+<h2 class="heading">Welcome to KIARA</h2>
+<p class="sub">Luxury. Creativity. Individuality.</p>
+<div class="section">
+<h2 class="heading">Featured Pieces</h2>
+<div class="grid" id="featured"></div>
+</div>
+</section>
+<section id="shop" hidden>
+<h2 class="heading">THE SHOP</h2>
+<p class="sub">Discover your next favourite piece</p>
+<div class="section">
+<input id="search" placeholder="Search clothing..." oninput="render()" style="width:100%;padding:13px;border:1px solid #e9cad8;border-radius:5px">
+<div class="categories" id="categories"></div>
+<div class="grid" id="products"></div>
+</div>
+</section>
+<section id="collections" hidden>
+<h2 class="heading">OUR COLLECTIONS</h2>
+<p class="sub">Curated fashion by KIARA</p>
+<div class="section">
+<div class="hero"><small>COLLECTION 01</small><h1>Modern Elegance</h1><p>Timeless pieces for every occasion.</p><button class="pink" onclick="show('shop')">DISCOVER</button></div>
+<div class="hero"><small>COLLECTION 02</small><h1>Everyday Style</h1><p>Make every day your runway.</p><button class="pink" onclick="show('shop')">DISCOVER</button></div>
+<div class="hero"><small>COLLECTION 03</small><h1>Statement Pieces</h1><p>Fashion without boundaries.</p><button class="pink" onclick="show('shop')">DISCOVER</button></div>
+</div>
+</section>
+<section id="wishlist" hidden>
+<h2 class="heading">YOUR WISHLIST</h2>
+<p class="sub">Pieces you've fallen in love with</p>
+<div class="section"><div class="grid" id="wishes"></div></div>
+</section>
+<section id="bag" hidden>
+<h2 class="heading">YOUR SHOPPING BAG</h2>
+<p class="sub">Your selected pieces</p>
+<div class="section" id="bagItems"></div>
+</section>
+</main>
+<div id="notice"></div>
+<footer>
+<strong>KIARA</strong>
+<p>THE ART OF PERSONAL STYLE</p>
+<p>Luxury fashion. Your identity. Your expression.</p>
+<p>© 2026 KIARA FASHION HOUSE</p>
+</footer>
+<script>
+const items=[
+{id:1,name:"The Elegance Dress",price:450,cat:"Dresses",img:"https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=500"},
+{id:2,name:"Classic Blazer",price:550,cat:"Tops",img:"https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=500"},
+{id:3,name:"Evening Gown",price:850,cat:"Dresses",img:"https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=500"},
+{id:4,name:"Modern Handbag",price:350,cat:"Accessories",img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500"},
+{id:5,name:"Minimalist Outfit",price:500,cat:"Tops",img:"https://images.unsplash.com/photo-1483985988355-763728e1935b?w=500"},
+{id:6,name:"Signature Shoes",price:600,cat:"Shoes",img:"https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=500"}
+];
+let category="All";
+let wishlist=[];
+let bag=[];
+function card(p){
+return `<article class="product"><img src="${p.img}" alt="${p.name}"><button class="heart" onclick="toggleWish(${p.id})">${wishlist.includes(p.id)?"♥":"♡"}</button><h3>${p.name}</h3><p class="price">R${p.price}</p><button onclick="addBag(${p.id})">ADD TO BAG</button></article>`;
+}
+function render(){
+let q=(document.getElementById("search")?.value||"").toLowerCase();
+let list=items.filter(p=>(category==="All"||p.cat===category)&&p.name.toLowerCase().includes(q));
+document.getElementById("products").innerHTML=list.map(card).join("");
+}
+function categories(){
+document.getElementById("categories").innerHTML=["All","Dresses","Tops","Accessories","Shoes"].map(c=>`<button class="${category===c?'active':''}" onclick="category='${c}';categories();render()">${c}</button>`).join("");
+}
+function show(page){
+document.querySelectorAll("main section").forEach(s=>s.hidden=true);
+document.getElementById(page).hidden=false;
+if(page==="shop"){categories();render()}
+if(page==="wishlist")document.getElementById("wishes").innerHTML=items.filter(p=>wishlist.includes(p.id)).map(card).join("")||"Your wishlist is empty.";
+if(page==="bag")drawBag();
+window.scrollTo(0,0);
+}
+function toggleWish(id){
+wishlist.includes(id)?wishlist=wishlist.filter(x=>x!==id):wishlist.push(id);
+document.getElementById("wishCount").textContent=wishlist.length;
+render();
+document.getElementById("featured").innerHTML=items.slice(0,4).map(card).join("");
+}
+function addBag(id){
+bag.push(id);
+document.getElementById("bagCount").textContent=bag.length;
+message("Added to your bag!");
+}
+function drawBag(){
+let box=document.getElementById("bagItems");
+if(!bag.length){box.innerHTML="Your shopping bag is empty.";return}
+box.innerHTML=bag.map((id,i)=>{let p=items.find(x=>x.id===id);return `<p>${p.name} — R${p.price} <button onclick="bag.splice(${i},1);document.getElementById('bagCount').textContent=bag.length;drawBag()">Remove</button></p>`}).join("");
+let total=bag.reduce((sum,id)=>sum+items.find(p=>p.id===id).price,0);
+box.innerHTML+=`<h3>Total: R${total}</h3><p>Demo storefront: checkout is not enabled yet.</p>`;
+}
+function message(t){
+document.getElementById("notice").textContent=t;
+}
+document.getElementById("featured").innerHTML=items.slice(0,4).map(card).join("");
+categories();
+</script>
+</body>
+</html>
